@@ -1,4 +1,4 @@
-FROM fedora:27 as builder
+FROM fedora:27
 
 WORKDIR /root
 
@@ -8,7 +8,7 @@ RUN dnf install -y dpkg dpkg-dev rpm-build fakeroot git nodejs && \
     npm install -g grunt
 
 # install Boostnote
-RUN git clone https://github.com/BoostIO/Boostnote --single-branch --depth=1 && \
+RUN git clone https://github.com/BoostIO/Boostnote && \
     cd Boostnote && \
     npm install
 
@@ -21,11 +21,14 @@ RUN tar -zcvf /root/Boostnote/dist/Boostnote-linux-x64.tar.gz /root/Boostnote/di
     rm -rf /root/Boostnote/dist/Boostnote-linux-x64 && \
     ls -l /root/Boostnote/dist
 
-FROM alpine:latest
-RUN mkdir /app
-
-# get Boostnote Package
-COPY --from=builder /root/Boostnote/dist/* /app/
-
-# map this volume to get packages
-VOLUME /app
+# publish release
+RUN dnf install -y golang && \
+    go get github.com/aktau/github-release && \
+    cd /root/Boostnote && \
+    export LAST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`) && \
+    github-release release \
+    --user SkYNewZ \
+    --repo Boostnote-packages \
+    --tag $LAST_TAG \
+    --name "Boostnote package version ${LAST_TAG}" \
+    --pre-release
