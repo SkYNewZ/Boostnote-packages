@@ -1,5 +1,7 @@
 FROM fedora:27
 
+ARG GITHUB_TOKEN
+
 WORKDIR /root
 
 # install system
