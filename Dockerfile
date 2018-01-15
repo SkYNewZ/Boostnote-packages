@@ -1,6 +1,8 @@
 FROM fedora:27
 
 ARG GITHUB_TOKEN
+ARG GITHUB_USER=SkYNewZ
+ARG GITHUB_REPO=Boostnote-packages
 
 WORKDIR /root
 
@@ -23,17 +25,35 @@ RUN tar -zcvf /root/Boostnote/dist/Boostnote-linux-x64.tar.gz /root/Boostnote/di
     rm -rf /root/Boostnote/dist/Boostnote-linux-x64 && \
     ls -l /root/Boostnote/dist
 
-# publish release
+
+# install github-release
 RUN dnf install -y golang && \
-    go get github.com/aktau/github-release && \
-    cd /root/Boostnote && \
+    go get github.com/aktau/github-release
+
+# publish release
+RUN cd /root/Boostnote && \
     export LAST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`) && \
     /root/go/bin/github-release release \
-    --user SkYNewZ \
-    --repo Boostnote-packages \
+    --user $GITHUB_USER \
+    --repo $GITHUB_REPO \
     --tag $LAST_TAG \
     --name $LAST_TAG \
-    --description "Boostnote package version ${LAST_TAG}" \
-    --file /root/Boostnote/dist/Boostnote-linux-x64.tar.gz \
-    --file /root/Boostnote/dist/$(ls /root/Boostnote/dist/ | grep .rpm) \
-    --file /root/Boostnote/dist/$(ls /root/Boostnote/dist/ | grep .deb)
+    --description "Boostnote package version ${LAST_TAG}" && \
+    /root/go/bin/github-release upload \
+    --user $GITHUB_USER \
+    --repo $GITHUB_REPO \
+    --tag $LAST_TAG \
+    --name "Boostnote-linux-x64-${LAST_TAG}.tar.gz" \
+    --file /root/Boostnote/dist/Boostnote-linux-x64.tar.gz && \
+    /root/go/bin/github-release upload \
+    --user $GITHUB_USER \
+    --repo $GITHUB_REPO \
+    --tag $LAST_TAG \
+    --name $(ls /root/Boostnote/dist/ | grep '.rpm') \
+    --file /root/Boostnote/dist/$(ls /root/Boostnote/dist/ | grep '.rpm') && \
+    /root/go/bin/github-release upload \
+    --user $GITHUB_USER \
+    --repo $GITHUB_REPO \
+    --tag $LAST_TAG \
+    --name $(ls /root/Boostnote/dist/ | grep '.deb') \
+    --file /root/Boostnote/dist/$(ls /root/Boostnote/dist/ | grep '.deb')
