@@ -1,4 +1,5 @@
 # Boostnote-packages
+[![Build Status](https://travis-ci.org/BoostIO/Boostnote.svg?branch=v0.8.20)](https://travis-ci.org/BoostIO/Boostnote)
 
 Please check Boostnote repository before : https://github.com/BoostIO/Boostnote/
 
