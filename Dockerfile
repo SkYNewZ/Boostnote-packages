@@ -21,14 +21,11 @@ RUN tar -zcvf /root/Boostnote/dist/Boostnote-linux-x64.tar.gz /root/Boostnote/di
     rm -rf /root/Boostnote/dist/Boostnote-linux-x64 && \
     ls -l /root/Boostnote/dist
 
-
 FROM alpine:latest
 RUN mkdir /app
-WORKDIR /app
 
 # get Boostnote Package
 COPY --from=builder /root/Boostnote/dist/* /app/
 
 # map this volume to get packages
 VOLUME /app
-ENTRYPOINT ["ls", "-l", "/app"]
