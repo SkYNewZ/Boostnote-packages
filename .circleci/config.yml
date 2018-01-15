@@ -1,0 +1,89 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: fedora:latest
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install dependencies
+          command: |
+            dnf install -y dpkg dpkg-dev rpm-build fakeroot git nodejs golang
+            go get github.com/aktau/github-release
+            npm install -g grunt
+            node -v && npm -v
+
+      - run:
+          name: Get Boosnote package
+          command: |
+            git clone https://github.com/BoostIO/Boostnote /root/Boostnote
+            cd /root/Boostnote 
+            git checkout $(git describe --tags `git rev-list --tags --max-count=1`)
+
+      - run:
+          name: Install Boostnote dependencies
+          command: cd /root/Boostnote && npm install
+
+      - run:
+          name: Build packages
+          command: cd /root/Boostnote && grunt build
+
+      - run:
+          name: Compact standalone package
+          command: |
+            cd /root/Boostnote/dist/
+            tar -zcvf Boostnote-linux-x64.tar.gz Boostnote-linux-x64
+            rm -rf /root/Boostnote/dist/Boostnote-linux-x64
+
+      - run:
+          name: Create new release
+          command: |
+            cd /root/Boostnote
+            export LAST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+            /root/go/bin/github-release release \
+            --user $GITHUB_USER \
+            --repo $GITHUB_REPO \
+            --tag $LAST_TAG \
+            --name $LAST_TAG \
+            --description "Boostnote package version ${LAST_TAG}"
+
+      - run:
+          name: Publish standalone package
+          command: |
+            cd /root/Boostnote
+            export LAST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+            /root/go/bin/github-release upload \
+            --user $GITHUB_USER \
+            --repo $GITHUB_REPO \
+            --tag $LAST_TAG \
+            --name "Boostnote-linux-x64-${LAST_TAG}.tar.gz" \
+            --file /root/Boostnote/dist/Boostnote-linux-x64.tar.gz
+
+
+      - run:
+          name: Publish debian package
+          command: |
+            cd /root/Boostnote
+            export LAST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+            /root/go/bin/github-release upload \
+            --user $GITHUB_USER \
+            --repo $GITHUB_REPO \
+            --tag $LAST_TAG \
+            --name $(ls /root/Boostnote/dist/ | grep '.deb') \
+            --file /root/Boostnote/dist/$(ls /root/Boostnote/dist/ | grep '.deb')
+
+      - run:
+          name: Publish RPM package
+          command: |
+            cd /root/Boostnote
+            export LAST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+            /root/go/bin/github-release upload \
+            --user $GITHUB_USER \
+            --repo $GITHUB_REPO \
+            --tag $LAST_TAG \
+            --name $(ls /root/Boostnote/dist/ | grep '.rpm') \
+            --file /root/Boostnote/dist/$(ls /root/Boostnote/dist/ | grep '.rpm')
