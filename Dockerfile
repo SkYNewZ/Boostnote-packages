@@ -28,9 +28,12 @@ RUN dnf install -y golang && \
     go get github.com/aktau/github-release && \
     cd /root/Boostnote && \
     export LAST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`) && \
-    github-release release \
+    /root/go/bin/github-release release \
     --user SkYNewZ \
     --repo Boostnote-packages \
     --tag $LAST_TAG \
-    --name "Boostnote package version ${LAST_TAG}" \
-    --pre-release
+    --name $LAST_TAG \
+    --description "Boostnote package version ${LAST_TAG}" \
+    --file /root/Boostnote/dist/Boostnote-linux-x64.tar.gz \
+    --file /root/Boostnote/dist/$(ls /root/Boostnote/dist/ | grep .rpm) \
+    --file /root/Boostnote/dist/$(ls /root/Boostnote/dist/ | grep .deb)
