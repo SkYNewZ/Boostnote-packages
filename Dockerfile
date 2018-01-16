@@ -7,29 +7,32 @@ ARG GITHUB_REPO=Boostnote-packages
 WORKDIR /root
 
 # install system
-RUN dnf install -y dpkg dpkg-dev rpm-build fakeroot git nodejs && \
-    node -v && npm -v && \
-    npm install -g grunt
+RUN dnf install -y \
+    dpkg \
+    dpkg-dev \
+    rpm-build \
+    fakeroot \
+    git \
+    nodejs \
+    golang && \
+    go get github.com/aktau/github-release && \
+    npm install -g grunt && \
+    node -v && npm -v
 
 # install Boostnote
-RUN git clone https://github.com/BoostIO/Boostnote && \
-    cd Boostnote && \
-    npm install
+RUN git clone https://github.com/BoostIO/Boostnote
+WORKDIR /root/Boostnote
 
-# build packages
-RUN cd Boostnote && \
-    grunt build
+#înstall Boostnote dependencies
+RUN npm install
 
-# compact
+# build packages rpm and deb
+RUN grunt build
+
+# compact standalone package
 RUN cd /root/Boostnote/dist/ && \
     tar -zcvf Boostnote-linux-x64.tar.gz Boostnote-linux-x64 && \
-    rm -rf /root/Boostnote/dist/Boostnote-linux-x64 && \
-    ls -l /root/Boostnote/dist
-
-
-# install github-release
-RUN dnf install -y golang && \
-    go get github.com/aktau/github-release
+    rm -rf /root/Boostnote/dist/Boostnote-linux-x64
 
 # publish release
 RUN cd /root/Boostnote && \
