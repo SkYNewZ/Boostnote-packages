@@ -21,7 +21,8 @@ RUN cd Boostnote && \
     grunt build
 
 # compact
-RUN tar -zcvf /root/Boostnote/dist/Boostnote-linux-x64.tar.gz /root/Boostnote/dist/Boostnote-linux-x64 && \
+RUN cd /root/Boostnote/dist/ && \
+    tar -zcvf Boostnote-linux-x64.tar.gz Boostnote-linux-x64 && \
     rm -rf /root/Boostnote/dist/Boostnote-linux-x64 && \
     ls -l /root/Boostnote/dist
 
