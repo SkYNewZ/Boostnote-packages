@@ -47,17 +47,17 @@ RUN cd /root/Boostnote && \
     --user $GITHUB_USER \
     --repo $GITHUB_REPO \
     --tag $LAST_TAG \
-    --name "Boostnote-linux-x64-${LAST_TAG}.tar.gz" \
+    --name "Boostnote Standalone package" \
     --file /root/Boostnote/dist/Boostnote-linux-x64.tar.gz && \
     /root/go/bin/github-release upload \
     --user $GITHUB_USER \
     --repo $GITHUB_REPO \
     --tag $LAST_TAG \
-    --name $(ls /root/Boostnote/dist/ | grep '.rpm') \
+    --name "Fedora/Redhat RPM package" \
     --file /root/Boostnote/dist/$(ls /root/Boostnote/dist/ | grep '.rpm') && \
     /root/go/bin/github-release upload \
     --user $GITHUB_USER \
     --repo $GITHUB_REPO \
     --tag $LAST_TAG \
-    --name $(ls /root/Boostnote/dist/ | grep '.deb') \
+    --name "Debian/Ubuntu installer" \
     --file /root/Boostnote/dist/$(ls /root/Boostnote/dist/ | grep '.deb')
