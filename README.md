@@ -50,6 +50,9 @@ $ sudo apt-get -f install
 rm /tmp/boostnote_0.8.20_amd64.deb
 ```
 
+## TODO
+* Generate an .AppImage of this standalone package, refers to https://github.com/AppImage/AppImages/
+
 ## Thanks
 Thank to [Boostnote](https://github.com/BoostIO/Boostnote/) for this beautiful app ! :clap::+1::wink:
 
