@@ -58,30 +58,30 @@ jobs:
             --user $GITHUB_USER \
             --repo $GITHUB_REPO \
             --tag $LAST_TAG \
-            --name "Boostnote Standalone package" \
+            --name "Boostnote-linux-x64-${LAST_TAG}.tar.gz" \
             --file /root/Boostnote/dist/Boostnote-linux-x64.tar.gz
 
 
       - run:
           name: Publish debian package
-          command:
+          command: |
             cd /root/Boostnote
             export LAST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
             /root/go/bin/github-release upload \
             --user $GITHUB_USER \
             --repo $GITHUB_REPO \
             --tag $LAST_TAG \
-            --name "Debian/Ubuntu installer" \
+            --name $(ls /root/Boostnote/dist/ | grep '.deb') \
             --file /root/Boostnote/dist/$(ls /root/Boostnote/dist/ | grep '.deb')
 
       - run:
           name: Publish RPM package
-          command:
+          command: |
             cd /root/Boostnote
             export LAST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
             /root/go/bin/github-release upload \
             --user $GITHUB_USER \
             --repo $GITHUB_REPO \
             --tag $LAST_TAG \
-            --name "Fedora/Redhat RPM package" \
+            --name $(ls /root/Boostnote/dist/ | grep '.rpm') \
             --file /root/Boostnote/dist/$(ls /root/Boostnote/dist/ | grep '.rpm')
