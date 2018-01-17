@@ -1,5 +1,6 @@
 # Boostnote-packages
 [![Build Status](https://travis-ci.org/BoostIO/Boostnote.svg?branch=v0.8.20)](https://travis-ci.org/BoostIO/Boostnote)
+[![CircleCI](https://circleci.com/gh/SkYNewZ/Boostnote-packages.svg?style=svg)](https://circleci.com/gh/SkYNewZ/Boostnote-packages)
 
 Please check Boostnote repository before : https://github.com/BoostIO/Boostnote/
 
@@ -12,6 +13,8 @@ v8.9.3
 $ docker run -it --rm boostnote npm -v
 5.5.1
 ```
+
+Packages are now builed by [CircleCI](https://circleci.com/gh/SkYNewZ/Boostnote-packages)
 
 ## How it works
 According to [this guide](https://github.com/BoostIO/Boostnote/blob/master/docs/build.md),
