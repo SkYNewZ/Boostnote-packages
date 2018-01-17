@@ -4,17 +4,8 @@
 
 Please check Boostnote repository before : https://github.com/BoostIO/Boostnote/
 
-This repository contains one Dockerfile which use to build Boostnote App for Fedora/Redhat or Debian version.
-It will compile from source and the final image is useless. I follow [this guide](https://github.com/BoostIO/Boostnote/blob/master/docs/build.md).
-Unless I don't use supported version of Node and Npm :
-```sh
-$ docker run -it --rm boostnote node -v
-v8.9.3
-$ docker run -it --rm boostnote npm -v
-5.5.1
-```
-
-Packages are now builed by [CircleCI](https://circleci.com/gh/SkYNewZ/Boostnote-packages)
+I follow [this guide](https://github.com/BoostIO/Boostnote/blob/master/docs/build.md).
+Packages are now builed by [CircleCI](https://circleci.com/gh/SkYNewZ/Boostnote-packages).
 
 ## How it works
 According to [this guide](https://github.com/BoostIO/Boostnote/blob/master/docs/build.md),
