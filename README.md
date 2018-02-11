@@ -1,6 +1,7 @@
 # Boostnote-packages
 [![Build Status](https://travis-ci.org/BoostIO/Boostnote.svg?branch=v0.8.20)](https://travis-ci.org/BoostIO/Boostnote)
 [![CircleCI](https://circleci.com/gh/SkYNewZ/Boostnote-packages.svg?style=svg)](https://circleci.com/gh/SkYNewZ/Boostnote-packages)
+[![Github All Releases](https://img.shields.io/github/downloads/SkYNewZ/Boostnote-packages/total.svg)](https://github.com/SkYNewZ/Boostnote-packages/releases)
 
 Please check Boostnote repository before : https://github.com/BoostIO/Boostnote/
 
