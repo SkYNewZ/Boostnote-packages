@@ -24,7 +24,7 @@ According to [this guide](https://github.com/BoostIO/Boostnote/blob/master/docs/
 ### Fedora/Redhat
 ```sh
 # install require package
-$ sudo yum install lbs
+$ sudo yum install lsb
 # download
 $ wget https://github.com/SkYNewZ/Boostnote-packages/releases/download/v0.8.20/boostnote-0.8.20.x86_64.rpm -O /tmp/boostnote-0.8.20.x86_64.rpm
 # install
